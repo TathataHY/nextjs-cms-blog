@@ -1,4 +1,4 @@
-# Build a Blog with Next.js 14 and Sanity CMS 
+# Blog with Next.js 14 and Sanity CMS 
 A blog built with Next.js 14 and Sanity CMS. This platform offers a modern and flexible development experience for creating dynamic and engaging web content.
 
 You can follow along the entire development of this project <a href="https://www.youtube.com/watch?v=yAqgjSZ0PqY" target="_blank">here</a>
