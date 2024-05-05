@@ -1,7 +1,7 @@
-import { Header, Toc } from "@/app/components";
+import { AddComment, Comments, Header, Toc } from "@/app/components";
 import { slugify } from "@/app/utils/helpers";
 import { Post } from "@/app/utils/interface";
-import { client } from "@/sanity/lib/client";
+import { readClient } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
@@ -16,9 +16,12 @@ interface Params {
   params: {
     slug: string;
   };
+  searchParams?: {
+    order: string;
+  };
 }
 
-const getPost = async (slug: string) => {
+const getPost = async (slug: string, order: string = "desc") => {
   const query = `
   *[_type == "post" && slug.current == "${slug}"][0] {
     title,
@@ -32,9 +35,14 @@ const getPost = async (slug: string) => {
       _id,
       slug,
       name
+    },
+    "comments": *[_type == "comment" && post._ref == ^._id ] | order(_createdAt ${order}) {
+      name,
+      comment,
+      _createdAt,
     }
   }`;
-  const post = await client.fetch(query);
+  const post = await readClient.fetch(query);
   return post;
 };
 
@@ -73,8 +81,10 @@ export const generateMetadata = async ({
   };
 };
 
-export default async function Page({ params }: Params) {
-  const post: Post = await getPost(params?.slug);
+export default async function Page({ params, searchParams }: Params) {
+  const order = searchParams?.order || "desc";
+
+  const post: Post = await getPost(params?.slug, order);
 
   if (!post) {
     notFound();
@@ -101,6 +111,12 @@ export default async function Page({ params }: Params) {
           <PortableText
             value={post?.body}
             components={myPortableTextComponents}
+          />
+          <AddComment post_id={post?._id} />
+          <Comments
+            comments={post?.comments || []}
+            slug={post?.slug?.current}
+            order={order}
           />
         </div>
       </div>

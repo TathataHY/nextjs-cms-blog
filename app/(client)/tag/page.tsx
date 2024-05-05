@@ -1,6 +1,6 @@
 import { Header } from "@/app/components";
 import { Tag } from "@/app/utils/interface";
-import { client } from "@/sanity/lib/client";
+import { readClient } from "@/sanity/lib/client";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ const getAllTags = async () => {
     _id,
     "postCount": count(*[_type == "post" && references("tags", ^._id)])
   }`;
-  const tags = client.fetch(query);
+  const tags = readClient.fetch(query);
   return tags;
 };
 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   description: "Search for posts by tags on the blog",
 };
 
-const page = async () => {
+export default async function Page() {
   const tags: Tag[] = await getAllTags();
 
   return (
@@ -44,6 +44,4 @@ const page = async () => {
       </div>
     </div>
   );
-};
-
-export default page;
+}

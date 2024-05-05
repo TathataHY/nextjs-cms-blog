@@ -1,6 +1,5 @@
-import { Header, PostComponent } from "@/app/components";
-import { Post } from "@/app/utils/interface";
-import { client } from "@/sanity/lib/client";
+import { Header, Post } from "@/app/components";
+import { readClient } from "@/sanity/lib/client";
 
 const getPostsByTag = async (tag: string) => {
   const query = `
@@ -15,7 +14,7 @@ const getPostsByTag = async (tag: string) => {
       name
     }
   }`;
-  const posts = await client.fetch(query);
+  const posts = await readClient.fetch(query);
   return posts;
 };
 
@@ -50,7 +49,7 @@ export default async function Page({ params }: Params) {
       <Header title={`#${params?.slug}`} tags />
       <div>
         {posts?.length > 0 &&
-          posts?.map((post) => <PostComponent key={post?._id} post={post} />)}
+          posts?.map((post) => <Post key={post?._id} post={post} />)}
       </div>
     </div>
   );

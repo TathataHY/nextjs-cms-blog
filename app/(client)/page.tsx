@@ -1,6 +1,6 @@
 import { Header, PostComponent } from "@/app/components";
-import { Post } from "@/app/utils/interface";
-import { client } from "@/sanity/lib/client";
+import { readClient } from "@/sanity/lib/client";
+import { Post } from "../utils/interface";
 
 const getPosts = async () => {
   const query = `
@@ -15,7 +15,7 @@ const getPosts = async () => {
       name
     }
   }`;
-  const post = await client.fetch(query);
+  const post = await readClient.fetch(query);
   return post;
 };
 

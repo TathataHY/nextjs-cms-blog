@@ -1,4 +1,6 @@
+export * from "@/app/components/AddComment";
 export * from "@/app/components/CMSNavbar";
+export * from "@/app/components/Comments";
 export * from "@/app/components/Header";
 export * from "@/app/components/Icons";
 export * from "@/app/components/Navbar";

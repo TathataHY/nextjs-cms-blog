@@ -1,6 +1,6 @@
-import { client } from "@/sanity/lib/client";
-import { MetadataRoute } from "next";
 import { Post } from "@/app/utils/interface";
+import { readClient } from "@/sanity/lib/client";
+import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const getPosts = async () => {
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         name
       }
     }`;
-    const data = await client.fetch(query);
+    const data = await readClient.fetch(query);
     return data;
   };
 
